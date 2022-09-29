@@ -7,12 +7,60 @@ string stringaDiConnessione = "Data Source=localhost;Initial Catalog=db-bibbliot
 
 SqlConnection connessioneSql = new SqlConnection(stringaDiConnessione);
 
+Console.WriteLine("Vuoi registrarti? \n 1.si \n 2.no");
+int register = Int32.Parse(Console.ReadLine()!);
+if(register == 1)
+{
+    try
+    {
+
+        Console.WriteLine("Inserisci nome");
+        string? nome = Console.ReadLine();
+
+        Console.WriteLine("Inserisci cognome");
+        string? cognome = Console.ReadLine();
+
+        Console.WriteLine("Inserisci email");
+        string? email = Console.ReadLine();
+
+        Console.WriteLine("Inserisci password");
+        string? password = Console.ReadLine();
+
+        Console.WriteLine("Inserisci phone");
+        string? phone = Console.ReadLine();
+
+        connessioneSql.Open();
+        string query = "INSERT INTO user (name, surname, email, password, phone) VALUES (@dato1, @dato2, @dato3, @dato4, @dato5);";
+
+        SqlCommand cmd = new SqlCommand(query, connessioneSql);
+
+        cmd.Parameters.Add(new SqlParameter("@dato1", nome));
+        cmd.Parameters.Add(new SqlParameter("@dato2", cognome));
+        cmd.Parameters.Add(new SqlParameter("@dato3", email));
+        cmd.Parameters.Add(new SqlParameter("@dato4", password));
+        cmd.Parameters.Add(new SqlParameter("@dato5", phone));
+
+        int affectedRows = cmd.ExecuteNonQuery();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.ToString());
+    }
+    finally
+    {
+        connessioneSql.Close();
+    }
+
+}
+
+
+
 try
 {
     int? durata;
     int pagine;
     string? tipo;
-    Console.WriteLine("Vuoi inserire un dvd o un libro? \n 1.dvd \n 2.libro]");
+    Console.WriteLine("Vuoi inserire un dvd o un libro? \n 1.dvd \n 2.libro");
     int scelta = Int32.Parse(Console.ReadLine()!);
     if (scelta == 1)
     {
@@ -56,18 +104,44 @@ try
 
     SqlCommand cmd = new SqlCommand(query, connessioneSql);
 
-    cmd.Parameters.Add(new SqlParameter( "@dato1", codice));
-    cmd.Parameters.Add(new SqlParameter( "@dato2", titolo));
-    cmd.Parameters.Add(new SqlParameter( "@dato3", anno));
-    cmd.Parameters.Add(new SqlParameter( "@dato4", categoria));
-    cmd.Parameters.Add(new SqlParameter( "@dato5", aviabile));
-    cmd.Parameters.Add(new SqlParameter( "@dato6", posizione));
-    cmd.Parameters.Add(new SqlParameter( "@dato7", autore));
-    cmd.Parameters.Add(new SqlParameter( "@dato8", tipo));
-    cmd.Parameters.Add(new SqlParameter( "@dato9", durata));
-    cmd.Parameters.Add(new SqlParameter( "@dato10", pagine));
+    cmd.Parameters.Add(new SqlParameter("@dato1", codice));
+    cmd.Parameters.Add(new SqlParameter("@dato2", titolo));
+    cmd.Parameters.Add(new SqlParameter("@dato3", anno));
+    cmd.Parameters.Add(new SqlParameter("@dato4", categoria));
+    cmd.Parameters.Add(new SqlParameter("@dato5", aviabile));
+    cmd.Parameters.Add(new SqlParameter("@dato6", posizione));
+    cmd.Parameters.Add(new SqlParameter("@dato7", autore));
+    cmd.Parameters.Add(new SqlParameter("@dato8", tipo));
+    cmd.Parameters.Add(new SqlParameter("@dato9", durata));
+    cmd.Parameters.Add(new SqlParameter("@dato10", pagine));
 
     int affectedRows = cmd.ExecuteNonQuery();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.ToString());
+}
+finally
+{
+    connessioneSql.Close();
+}
+
+
+try
+{
+    connessioneSql.Open();
+    string query = "SELECT * FROM document;";
+
+    SqlCommand cmd = new SqlCommand(query, connessioneSql);
+
+    SqlDataReader reader = cmd.ExecuteReader();
+
+    while (reader.Read())
+    {
+        long id = reader.GetInt64(0);
+        string title = reader.GetString(2);
+        Console.WriteLine(id + " "+ title);
+    }
 }
 catch (Exception ex)
 {
@@ -162,11 +236,11 @@ finally
 //                if (scelta == "si")
 //                {
 //                    prestito.Add(new Prestito("dal 20/9 al 20/10", "Ugo", "De Ughi", dvd));
-                    
+
 //                }
 //            };
 //       }
-        
+
 //    }else if(ricercaTipo == "codice")
 //    {
 //        Console.WriteLine("Inserisci un Codice");
@@ -190,7 +264,7 @@ finally
 //    {
 //        Console.WriteLine("Ricerca non valida");
 //    }
-    
+
 
 //}
 //else if(ricerca == "libri" || ricerca == "libro")
@@ -266,5 +340,5 @@ finally
 
 //void login()
 //{
- 
+
 //}
