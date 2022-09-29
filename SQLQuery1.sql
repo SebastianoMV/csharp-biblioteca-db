@@ -1,15 +1,4 @@
-﻿CREATE TABLE [dbo].[rents] (
-    [id]           BIGINT   IDENTITY NOT NULL,
-    [created_at]   DATETIME DEFAULT (NULL) NULL,
-    [updated_at]   DATETIME DEFAULT (NULL) NULL,
-    [document_id]  BIGINT   NOT NULL,
-    [user_id]      BIGINT   NOT NULL,
-    [start_period] DATETIME,
-    [end_period] DATETIME,
-    CONSTRAINT [PK_rents_id] PRIMARY KEY CLUSTERED ([id] ASC),
-    CONSTRAINT [rents$rents_user_id_foreign] FOREIGN KEY ([user_id]) REFERENCES [dbo].[user] ([id]),
-    CONSTRAINT [rents$rent_document_id_foreign] FOREIGN KEY ([document_id]) REFERENCES [dbo].[document] ([id])
-);
+﻿
 
 CREATE TABLE [dbo].[user] (
     [id]         BIGINT        IDENTITY (1, 1) NOT NULL,
@@ -38,4 +27,17 @@ CREATE TABLE [dbo].[document] (
     [created_at] DATETIME      DEFAULT (NULL) NULL,
     [updated_at] DATETIME      DEFAULT (NULL) NULL,
     PRIMARY KEY CLUSTERED ([id] ASC)
+);
+
+CREATE TABLE [dbo].[rents] (
+    [id]           BIGINT   IDENTITY NOT NULL,
+    [created_at]   DATETIME DEFAULT (NULL) NULL,
+    [updated_at]   DATETIME DEFAULT (NULL) NULL,
+    [document_id]  BIGINT   NOT NULL,
+    [user_id]      BIGINT   NOT NULL,
+    [start_period] DATETIME,
+    [end_period] DATETIME,
+    CONSTRAINT [PK_rents_id] PRIMARY KEY CLUSTERED ([id] ASC),
+    CONSTRAINT [rents$rents_user_id_foreign] FOREIGN KEY ([user_id]) REFERENCES [dbo].[user] ([id]),
+    CONSTRAINT [rents$rent_document_id_foreign] FOREIGN KEY ([document_id]) REFERENCES [dbo].[document] ([id])
 );
