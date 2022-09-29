@@ -9,7 +9,7 @@ SqlConnection connessioneSql = new SqlConnection(stringaDiConnessione);
 
 Console.WriteLine("Vuoi registrarti? \n 1.si \n 2.no");
 int register = Int32.Parse(Console.ReadLine()!);
-if(register == 1)
+if (register == 1)
 {
     try
     {
@@ -140,7 +140,7 @@ try
     {
         long id = reader.GetInt64(0);
         string title = reader.GetString(2);
-        Console.WriteLine(id + " "+ title);
+        Console.WriteLine(id + " " + title);
     }
 }
 catch (Exception ex)
@@ -151,6 +151,35 @@ finally
 {
     connessioneSql.Close();
 }
+
+try
+{
+    Console.WriteLine("Inserisci un id?");
+    int id = Int32.Parse(Console.ReadLine()!);
+
+    connessioneSql.Open();
+    string query = "SELECT * FROM document where id='" + id+ "';";
+    
+    
+    SqlCommand cmd = new SqlCommand(query, connessioneSql);
+
+    SqlDataReader reader = cmd.ExecuteReader();
+
+    if (reader.Read())
+    {
+        string newtitle = reader.GetString(2);
+        Console.WriteLine(newtitle);
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.ToString());
+}
+finally
+{
+    connessioneSql.Close();
+}
+
 
 
 
